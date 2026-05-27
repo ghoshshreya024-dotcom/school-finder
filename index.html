@@ -204,11 +204,26 @@ html,body{
 .ac-none{padding:16px;font-size:13px;color:var(--text-lt);text-align:center}
 
 /* ── CONTROLS ── */
-.ctrl-section{
-  padding:16px 22px 18px;border-bottom:2px solid var(--border);
-  flex-shrink:0;display:flex;flex-direction:column;gap:16px;
-  background:var(--surface);
+.ctrl-wrap{flex-shrink:0;border-bottom:2px solid var(--border)}
+.ctrl-toggle{
+  width:100%;padding:10px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--surface);border:none;cursor:pointer;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  transition:background .15s;
 }
+.ctrl-toggle:hover{background:var(--bg)}
+.ctrl-toggle-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-md)}
+.ctrl-chevron{transition:transform .25s;color:var(--text-xlt);flex-shrink:0}
+.ctrl-toggle.open .ctrl-chevron{transform:rotate(180deg)}
+.ctrl-section{
+  display:flex;flex-direction:column;gap:16px;
+  background:var(--surface);
+  overflow:hidden;
+  max-height:0;padding:0 22px;
+  transition:max-height .3s ease, padding .3s ease;
+}
+.ctrl-section.open{max-height:320px;padding:16px 22px 18px;}
 .ctrl-group{display:flex;flex-direction:column;gap:8px}
 .ctrl-label{
   font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
@@ -318,8 +333,8 @@ html,body{
 @keyframes cardIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .card{
   background:var(--white);border:1px solid var(--border);
-  border-radius:var(--r);margin-bottom:10px;overflow:hidden;cursor:pointer;
-  box-shadow:var(--sh-xs);
+  border-radius:var(--r-lg);margin-bottom:14px;overflow:hidden;cursor:pointer;
+  box-shadow:var(--sh-sm);
   transition:box-shadow .2s, transform .17s;
   animation:cardIn .22s ease both;
 }
@@ -329,15 +344,15 @@ html,body{
 .card:nth-child(3){animation-delay:.12s}
 .card:nth-child(4){animation-delay:.18s}
 /* card colored header strip */
-.card-head{padding:10px 14px 8px;border-bottom:1px solid var(--border-lt)}
+.card-head{padding:14px 18px 12px;border-bottom:1px solid var(--border-lt)}
 .card-head-e{background:var(--elem-bg)}
 .card-head-m{background:var(--mid-bg)}
 .card-head-h{background:var(--high-bg)}
 .card-badge{
   display:inline-flex;align-items:center;gap:4px;
-  font-size:10px;font-weight:700;
-  padding:2px 7px;border-radius:var(--r-full);
-  margin-bottom:5px;letter-spacing:.05em;text-transform:uppercase;
+  font-size:11px;font-weight:700;
+  padding:3px 10px;border-radius:var(--r-full);
+  margin-bottom:7px;letter-spacing:.05em;text-transform:uppercase;
   border:1px solid transparent;
 }
 .badge-e{background:rgba(255,255,255,.7);color:var(--elem);border-color:var(--elem-bd)}
@@ -345,22 +360,22 @@ html,body{
 .badge-h{background:rgba(255,255,255,.7);color:var(--high);border-color:var(--high-bd)}
 .card-name{
   font-family:'Outfit',sans-serif;
-  font-size:15px;font-weight:700;color:var(--text);
+  font-size:19px;font-weight:700;color:var(--text);
   line-height:1.2;letter-spacing:-.02em;
 }
 /* info table rows */
 .ct-row{
   display:flex;align-items:baseline;
-  padding:5px 14px;border-bottom:1px solid var(--border-lt);
+  padding:8px 18px;border-bottom:1px solid var(--border-lt);
 }
 .ct-row:last-child{border-bottom:none}
 .ct-key{
-  font-size:11px;font-weight:600;color:var(--text-lt);
+  font-size:12px;font-weight:600;color:var(--text-lt);
   width:42%;flex-shrink:0;padding-right:8px;
   letter-spacing:.01em;
 }
 .ct-val{
-  font-size:12px;color:var(--text);flex:1;line-height:1.4;font-weight:500;
+  font-size:13px;color:var(--text);flex:1;line-height:1.4;font-weight:500;
 }
 .ct-val a{color:var(--mid);text-decoration:none;font-weight:600}
 .ct-val a:hover{text-decoration:underline}
@@ -386,6 +401,41 @@ html,body{
   transition:opacity .4s;
 }
 .map-hint.hidden{opacity:0;pointer-events:none}
+
+/* ── MAP LEGEND ── */
+#mapLegend{
+  position:absolute;bottom:28px;right:10px;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(0,0,0,.09);
+  border-radius:14px;padding:18px 22px 16px;
+  box-shadow:0 4px 20px rgba(0,0,0,.16);
+  z-index:500;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  min-width:230px;
+}
+.leg-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#9CA3AF;margin-bottom:12px}
+.leg-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;color:#1F2937;font-size:15px;font-weight:500}
+.leg-row:last-child{margin-bottom:0}
+.leg-dot{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 1px 5px rgba(0,0,0,.25)}
+.leg-dot-e{background:#3D7A3E}
+.leg-dot-m{background:#2C3870}
+.leg-dot-h{background:#8B1A1A}
+.leg-swatch{width:30px;height:18px;border-radius:4px;flex-shrink:0}
+.leg-sw-e{background:rgba(61,122,62,.18);border:2px solid #3D7A3E}
+.leg-sw-m{background:rgba(44,56,112,.18);border:2px solid #2C3870}
+.leg-sw-h{background:rgba(139,26,26,.18);border:2px solid #8B1A1A}
+.leg-line{width:30px;height:0;border-top:3px solid #1A1A1A;flex-shrink:0;margin:1px 0}
+.leg-divider{border:none;border-top:1px solid #E5E7EB;margin:11px 0}
+
+/* ── CLICK HINT TOAST ── */
+#clickHint{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(15,15,15,.88);color:#fff;
+  padding:16px 32px;border-radius:14px;font-size:16px;font-weight:600;
+  pointer-events:none;opacity:0;transition:opacity .35s;
+  z-index:9999;white-space:nowrap;letter-spacing:.02em;
+  box-shadow:0 8px 32px rgba(0,0,0,.35);
+}
+#clickHint.show{opacity:1}
 
 /* ── POPUP ── */
 .leaflet-popup-content-wrapper{border-radius:var(--r)!important;box-shadow:var(--sh-lg)!important;padding:0!important;overflow:hidden!important;border:1px solid var(--border)!important}
@@ -466,6 +516,9 @@ html,body{
 .leaflet-control-zoom-in,.leaflet-control-zoom-out{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif!important;color:var(--navy)!important;font-weight:600!important;font-size:16px!important;width:32px!important;height:32px!important;line-height:30px!important}
 .leaflet-control-zoom-in:hover,.leaflet-control-zoom-out:hover{background:var(--surface)!important;color:var(--navy-md)!important}
 .leaflet-attribution-flag{display:none!important}
+.home-ctrl{margin-top:6px!important}
+.home-ctrl a{width:32px!important;height:32px!important;display:flex!important;align-items:center;justify-content:center;color:var(--navy)!important;border-radius:var(--r-sm)!important;border:1px solid var(--border)!important;box-shadow:var(--sh-sm)!important;background:#fff;cursor:pointer;text-decoration:none}
+.home-ctrl a:hover{background:var(--surface)!important;color:var(--navy-md)!important}
 </style>
 </head>
 <body>
@@ -513,7 +566,12 @@ html,body{
     </div>
 
     <!-- Controls -->
-    <div class="ctrl-section">
+    <div class="ctrl-wrap">
+    <button class="ctrl-toggle" id="ctrlToggle" onclick="toggleCtrl()">
+      <span class="ctrl-toggle-label">Map Controls</span>
+      <svg class="ctrl-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4.5l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="ctrl-section" id="ctrlSection">
       <!-- Schools on map -->
       <div class="ctrl-group">
         <span class="ctrl-label">Schools on Map</span>
@@ -554,6 +612,7 @@ html,body{
         </div>
       </div>
     </div>
+    </div>
 
     <!-- Results -->
     <div class="res-scroll" id="resScroll">
@@ -579,6 +638,19 @@ html,body{
         <line x1="1" y1="6.5" x2="12" y2="6.5" stroke="#9CA3AF" stroke-width="1.3"/>
       </svg>
       Click anywhere on the map to find schools at that location
+    </div>
+    <div id="clickHint"></div>
+    <div id="mapLegend">
+      <div class="leg-title">Legend</div>
+      <div class="leg-row"><div class="leg-dot leg-dot-e">E</div><span>Elementary School</span></div>
+      <div class="leg-row"><div class="leg-dot leg-dot-m">M</div><span>Middle School</span></div>
+      <div class="leg-row"><div class="leg-dot leg-dot-h">H</div><span>High School</span></div>
+      <hr class="leg-divider">
+      <div class="leg-row"><div class="leg-swatch leg-sw-e"></div><span>Elementary Zone</span></div>
+      <div class="leg-row"><div class="leg-swatch leg-sw-m"></div><span>Middle School Zone</span></div>
+      <div class="leg-row"><div class="leg-swatch leg-sw-h"></div><span>High School Zone</span></div>
+      <hr class="leg-divider">
+      <div class="leg-row"><div class="leg-line"></div><span>District Boundary</span></div>
     </div>
   </div>
 </div>
@@ -613,36 +685,29 @@ html,body{
       <div class="help-step">
         <div class="help-num">1</div>
         <div class="help-content">
-          <strong>Search your address</strong>
-          <p>Type your home address in the search box. Suggestions from the LISD address database appear as you type — select one or press Search.</p>
+          <strong>Enter your address</strong>
+          <p>Type your home address in the search box and pick from the suggestions, then press Search. You can also click directly on a house on the map — the tool will snap to the nearest address automatically.</p>
         </div>
       </div>
       <div class="help-step">
         <div class="help-num">2</div>
         <div class="help-content">
-          <strong>Or click directly on the map</strong>
-          <p>Click anywhere on the map to instantly find the zoned schools for that location. A pin will drop at your chosen point.</p>
+          <strong>See your 3 zoned schools</strong>
+          <p>Your assigned elementary, middle, and high school appear as cards on the left. Each card shows the full school name, address, phone number, and links to the school website and enrollment portal.</p>
         </div>
       </div>
       <div class="help-step">
         <div class="help-num">3</div>
         <div class="help-content">
-          <strong>View your assigned schools</strong>
-          <p>Your zoned elementary, middle, and high school appear in the left panel with zone name, grades served, address, phone, and links to the school website and enrollment portal.</p>
+          <strong>Click a card to go to the school</strong>
+          <p>Tap any school card to fly to that school on the map. A popup will open with its details.</p>
         </div>
       </div>
       <div class="help-step">
         <div class="help-num">4</div>
         <div class="help-content">
-          <strong>Toggle school markers &amp; zones</strong>
-          <p>Use the Schools on Map buttons to show or hide markers by school level. Use Attendance Zones to overlay the full district zone boundaries on the map.</p>
-        </div>
-      </div>
-      <div class="help-step">
-        <div class="help-num">5</div>
-        <div class="help-content">
-          <strong>Click a school card</strong>
-          <p>Click any result card to fly to that school on the map and open its information popup.</p>
+          <strong>Explore map controls</strong>
+          <p>Click <strong>Map Controls</strong> in the sidebar to show or hide school markers, overlay attendance zone boundaries, or switch between Street, Satellite, and Topo basemaps. Use the home button on the map to reset the view.</p>
         </div>
       </div>
     </div>
@@ -651,6 +716,8 @@ html,body{
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
+let districtLayer=null;
+let nameMap={};
 /* ─── CONFIG ─── */
 const BASE='https://services8.arcgis.com/dRr2IyKONDHB1yz8/arcgis/rest/services/School_Finder_Development/FeatureServer';
 const L0=BASE+'/0',L1=BASE+'/1',L2=BASE+'/2',L3=BASE+'/3',L4=BASE+'/4',L5=BASE+'/5';
@@ -677,26 +744,50 @@ window.setBM=n=>{
 window.openHelp=function(){document.getElementById('helpModal').classList.add('open')};
 window.closeHelp=function(){document.getElementById('helpModal').classList.remove('open')};
 
+L.Control.Home=L.Control.extend({
+  options:{position:'topleft'},
+  onAdd:function(){
+    const div=L.DomUtil.create('div','home-ctrl leaflet-control');
+    const a=L.DomUtil.create('a','',div);
+    a.title='Reset map view';
+    a.innerHTML='<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M1 7L8 1l7 6v8h-4.5v-4h-5v4H1V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+    L.DomEvent.disableClickPropagation(div);
+    a.addEventListener('click',function(e){e.preventDefault();if(districtLayer)map.fitBounds(districtLayer.getBounds(),{padding:[40,40]});else map.setView([30.553,-97.837],11);});
+    return div;
+  }
+});
+new L.Control.Home().addTo(map);
+
 /* ─── MAP CLICK ─── */
 function hideMapHint(){const h=document.getElementById('mapHint');if(h)h.classList.add('hidden')}
 map.on('click',async function(e){
-  const{lat,lng}=e.latlng;
-  const{x,y}=ll2m(lat,lng);
+  let{lat,lng}=e.latlng;
+  let{x,y}=ll2m(lat,lng);
   setSt('<span class="sp"></span> Finding your schools…','ld');
   document.getElementById('srchBtn').disabled=true;
+  const nearest=await qNearestAddr(x,y);
+  if(!nearest){
+    const[ea2,ma2,ha2]=await Promise.all([qBdry(L2,x,y),qBdry(L3,x,y),qBdry(L4,x,y)]);
+    document.getElementById('srchBtn').disabled=false;
+    if(!ea2&&!ma2&&!ha2){
+      showOut();setSt('Location may be outside LISD boundaries.','err');
+      map.setView([lat,lng],13);
+    } else {
+      setSt('','');
+      showClickHint('Try clicking on a house address');
+    }
+    return;
+  }
+  x=nearest.geometry.x;y=nearest.geometry.y;
+  ({lat,lng}=m2ll(x,y));
   const[ea,ma,ha]=await Promise.all([qBdry(L2,x,y),qBdry(L3,x,y),qBdry(L4,x,y)]);
   clearPrev();
-  let dispAddr='Selected location';
-  try{
-    const gr=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,{headers:{'Accept-Language':'en'}});
-    const gd=await gr.json();
-    if(gd.address){const a=gd.address;dispAddr=[a.house_number,a.road,a.city||a.town||a.village].filter(Boolean).join(', ')||dispAddr}
-  }catch{}
+  const dispAddr=nearest.attributes.FULL_ADDR||'Selected location';
   document.getElementById('addrIn').value=dispAddr;
   homeM=L.marker([lat,lng],{icon:mkHome(),zIndexOffset:2000}).addTo(map);
   homeM.bindPopup(`<div style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,system-ui,sans-serif;padding:14px 18px"><strong style="font-size:14px;display:block;margin-bottom:3px;color:#0D1526;font-weight:600">Selected Location</strong><span style="font-size:12px;color:#6B7280">${dispAddr}</span></div>`);
   const results=[{attrs:ea,type:'elem'},{attrs:ma,type:'mid'},{attrs:ha,type:'high'}]
-    .filter(r=>r.attrs).map(r=>({...r,info:exInfo(r.attrs)}));
+    .filter(r=>r.attrs).map(r=>({...r,info:exInfo(r.attrs,r.type)}));
   if(!results.length){
     showOut();setSt('Location may be outside LISD boundaries.','err');
     map.setView([lat,lng],13);document.getElementById('srchBtn').disabled=false;return;
@@ -775,7 +866,7 @@ async function loadSchools(){
       const p=f.properties,type=g2t(p.GradeLevel);
       const ll=[f.geometry.coordinates[1],f.geometry.coordinates[0]];
       const m=L.marker(ll,{icon:mkIco(type,24)});
-      m.bindPopup(mkPop(p.Name,type,p.Address,p.Phone,p.URL),{maxWidth:340,closeButton:true});
+      m.bindPopup(()=>mkPop(nameMap[type+':'+p.JoinName]||p.Name,type,p.Address,p.Phone,p.URL),{maxWidth:340,closeButton:true});
       schoolGrp[type].addLayer(m);
       mByName[p.Name]=m;
       dByName[p.Name]={latlng:ll,type,props:p};
@@ -791,18 +882,29 @@ async function loadBoundaries(){
   try{
     // District outline always visible
     const dr=await fetch(`${L5}/query?where=1%3D1&outFields=*&f=geojson`);
-    L.geoJSON(await dr.json(),{style:{color:'#1A1A1A',weight:2.5,fillOpacity:0,opacity:.9}}).addTo(map);
+    districtLayer=L.geoJSON(await dr.json(),{style:{color:'#1A1A1A',weight:2.5,fillOpacity:0,opacity:.9}}).addTo(map);
+    map.fitBounds(districtLayer.getBounds(),{padding:[40,40]});
     // Load each zone layer separately — not added to map until user toggles on
     const [r2,r3,r4]=await Promise.all([
       fetch(`${L2}/query?where=1%3D1&outFields=*&f=geojson`),
       fetch(`${L3}/query?where=1%3D1&outFields=*&f=geojson`),
       fetch(`${L4}/query?where=1%3D1&outFields=*&f=geojson`)
     ]);
-    zoneGrp.elem=L.geoJSON(await r2.json(),{style:{color:'#1A7A3C',weight:1.5,fillColor:'#1A7A3C',fillOpacity:.07}});
-    zoneGrp.mid =L.geoJSON(await r3.json(),{style:{color:'#1A3A8F',weight:1.5,fillColor:'#1A3A8F',fillOpacity:.07}});
-    zoneGrp.high=L.geoJSON(await r4.json(),{style:{color:'#991B1B',weight:1.5,fillColor:'#991B1B',fillOpacity:.07}});
+    const [d2,d3,d4]=await Promise.all([r2.json(),r3.json(),r4.json()]);
+    d2.features.forEach(f=>{const p=f.properties;if(p.ELAZ_2425&&p.DisplayName)nameMap['elem:'+p.ELAZ_2425]=p.DisplayName;});
+    d3.features.forEach(f=>{const p=f.properties;if(p.MSAZ_2425&&p.DisplayName)nameMap['mid:'+p.MSAZ_2425]=p.DisplayName;});
+    d4.features.forEach(f=>{const p=f.properties;if(p.HSAZ_2425&&p.DisplayName){nameMap['high:'+p.HSAZ_2425]=p.DisplayName;nameMap['high:'+p.HSAZ_2425+' High']=p.DisplayName;}});
+    zoneGrp.elem=L.geoJSON(d2,{style:{color:'#1A7A3C',weight:1.5,fillColor:'#1A7A3C',fillOpacity:.07}});
+    zoneGrp.mid =L.geoJSON(d3,{style:{color:'#1A3A8F',weight:1.5,fillColor:'#1A3A8F',fillOpacity:.07}});
+    zoneGrp.high=L.geoJSON(d4,{style:{color:'#991B1B',weight:1.5,fillColor:'#991B1B',fillOpacity:.07}});
   }catch(e){console.warn('Boundaries:',e)}
 }
+
+/* ─── CONTROLS TOGGLE ─── */
+window.toggleCtrl=function(){
+  document.getElementById('ctrlSection').classList.toggle('open');
+  document.getElementById('ctrlToggle').classList.toggle('open');
+};
 
 /* ─── LAYER TOGGLES ─── */
 window.togSchools=function(type){
@@ -857,34 +959,49 @@ async function qBdry(url,x,y){
   }catch{return null}
 }
 
-/* ─── EXTRACT INFO ─── */
-function exInfo(a){
-  if(!a)return null;
-  const ents=Object.entries(a);
-  let short=a.ELAZ_2425||a.MLAZ_2425||a.HLAZ_2425||a.ELAZ||a.MLAZ||a.HLAZ||'';
-  if(!short){const laz=ents.find(([k,v])=>k.toUpperCase().includes('LAZ')&&typeof v==='string'&&v.length<60);if(laz)short=laz[1]}
-  let name=a.Zone||a.ZONE||a.ZoneName||a.Zone_Name||a.SchoolName||a.School_Name||a.Name||'';
-  if(!name){
-    for(const[,v]of ents){
-      if(typeof v==='string'&&v.length>4&&v.length<120){
-        if(['elementary','middle','high school',' ms',' hs'].some(w=>v.toLowerCase().includes(w))){name=v;break}
-      }
+async function qNearestAddr(x,y){
+  const g=encodeURIComponent(JSON.stringify({x,y}));
+  try{
+    const r=await fetch(`${L0}/query?geometry=${g}&geometryType=esriGeometryPoint&spatialRel=esriSpatialRelIntersects&distance=400&units=esriSRUnit_Foot&inSR=102100&outFields=FULL_ADDR&returnGeometry=true&f=json`);
+    const d=await r.json();
+    if(!d.features||!d.features.length)return null;
+    let best=null,minD=Infinity;
+    for(const f of d.features){
+      const dx=f.geometry.x-x,dy=f.geometry.y-y;
+      const dist=dx*dx+dy*dy;
+      if(dist<minD){minD=dist;best=f;}
     }
-  }
+    return best;
+  }catch{return null}
+}
+
+let _hintT;
+function showClickHint(msg){
+  const h=document.getElementById('clickHint');
+  h.textContent=msg;h.classList.add('show');
+  clearTimeout(_hintT);
+  _hintT=setTimeout(()=>h.classList.remove('show'),3500);
+}
+
+/* ─── EXTRACT INFO ─── */
+function exInfo(a,type){
+  if(!a)return null;
+  const zoneCode=type==='elem'?a.ELAZ_2425:type==='mid'?a.MSAZ_2425:a.HSAZ_2425;
   return{
-    name,short,
-    grp:   a.Grade_Group||a.GradeGroup||'',
-    grades:a.Grades_Served||a.GradesServed||'',
-    addr:  a.Address||'',
-    phone: a.Phone_Number||a.Phone||'',
-    web:   a.Website||a.URL||'',
-    enroll:a.Click_to_Enroll||a.Enroll_URL||''
+    name:   a.DisplayName||'',
+    short:  zoneCode||'',
+    grp:    a.GradeGroup||'',
+    grades: a.Grades||'',
+    addr:   a.Address||'',
+    phone:  a.Phone||'',
+    web:    a.URL||'',
+    enroll: a.Enroll_URL||''
   };
 }
 
 /* ─── RESOLVE SCHOOL NAME ─── */
 function resolveName(info,type){
-  if(info.short&&byJoin[info.short])return byJoin[info.short];
+  if(info.short&&byJoin[info.short]&&dByName[byJoin[info.short]]?.type===type)return byJoin[info.short];
   if(info.short){
     const m=Object.keys(dByName).find(n=>dByName[n].type===type&&n.toLowerCase().startsWith(info.short.toLowerCase()));
     if(m)return m;
@@ -949,7 +1066,7 @@ window.doSearch=async function(){
 
   const results=[{attrs:ea,type:'elem'},{attrs:ma,type:'mid'},{attrs:ha,type:'high'}]
     .filter(r=>r.attrs)
-    .map(r=>({...r,info:exInfo(r.attrs)}));
+    .map(r=>({...r,info:exInfo(r.attrs,r.type)}));
 
   if(!results.length){
     showOut();setSt('Address may be outside LISD boundaries.','err');
@@ -998,7 +1115,7 @@ function buildCards(results){
 }
 function mkCard({info,type}){
   const sn=resolveName(info,type);
-  const displayName=sn||info.name||'School';
+  const displayName=info.name||sn||'School';
   const tc=type==='elem'?'e':type==='mid'?'m':'h';
   const canClick=sn&&dByName[sn];
   const typeLabel=type==='elem'?'Elementary School Zone':type==='mid'?'Middle School Zone':'High School Zone';
@@ -1064,7 +1181,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.s-iw'))hideDrop()})
 window.dismissSplash=function(){
   const s=document.getElementById('splash');
   s.classList.add('hiding');
-  setTimeout(()=>{s.style.display='none'},650);
+  setTimeout(()=>{s.style.display='none';openHelp();},650);
 };
 
 /* ─── INIT ─── */
